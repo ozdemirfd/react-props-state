@@ -1,4 +1,6 @@
 import React from "react";
+import TodoItems from "./TodoItems";
+
 class TodoList extends React.Component{
   constructor(props){
     super(props)
@@ -16,16 +18,48 @@ class TodoList extends React.Component{
         completed:false,
         id:678905432
        }
-      ]
-
+      ],
+      newTask:""
     }
+      this.HandleInput=this.HandleInput.bind(this)
+      this.HandleClick=this.HandleClick.bind(this)
+    
   }
+
+HandleInput(e){
+this.setState({newTask:e.target.value})
+}
+HandleClick(e){
+  if(this.state.newTask.trim()){
+    //create new object
+    let newItem={
+      title:this.state.newTask,
+         completed:false,
+         id:Date.now()
+    }
+    //concatenate new task object to the previous task in the state
+    this.setState(prevState =>{
+      return {
+        tasks:prevState.tasks.concat(newItem)
+      }
+    })
+    this.state.newTask="";
+  }else{
+    alert('Please enter a value')
+  }
+
+
+}
+
   render(){
     return (
-    <div>
-    <input type="text"/>
-    <button type="button">Add</button>
-    </div>
+      <div>
+    <form>
+    <input type="text" onInput={this.HandleInput} value={this.state.newTask}/>
+    <button type="button" onClick={this.HandleClick}>Add</button>
+    </form>
+    <TodoItems tasks={this.state.tasks} />
+       </div>
     )
   }
 }
