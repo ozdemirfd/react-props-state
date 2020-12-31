@@ -1,10 +1,10 @@
-function TodoItems (props){
-  return <ul> {props.tasks.map(item=> {
-      return (
+function TodoItems(props) {
+  return <ul> {props.tasks.map(item => {
+    return (
       <li>{item.title} &nbsp;
-      <span className="remove-item">(Remove)</span>
+        <span className="remove-item">(Remove)</span>
       </li>
-      )
+    )
   })}</ul>
 }
 
