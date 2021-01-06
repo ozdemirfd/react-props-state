@@ -1,67 +1,70 @@
-import React from "react";
-import TodoItems from "./TodoItems";
+import React from 'react';
+import TodoItems from './TodoItems';
 
 class TodoList extends React.Component {
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
       tasks: [
         {
-          title: 'Get a shopping cart',
+          title: 'Get a shoping cart',
           completed: false,
           id: 123456789
-        },
-        {
-          title: "Buy milk",
-          completed: false,
-          id: 987654321
         },
         {
           title: "Buy egg",
           completed: false,
           id: 678905432
+        },
+        {
+          title: 'Buy Milk',
+          completed: false,
+          id: 234567890
         }
       ],
-      newTask: ""
+      newTask: ''
     }
-    this.HandleInput = this.HandleInput.bind(this)
-    this.HandleClick = this.HandleClick.bind(this)
-
+    this.handleInput = this.handleInput.bind(this);
+    this.handleClick = this.handleClick.bind(this);
   }
 
-  HandleInput(e) {
-    this.setState({ newTask: e.target.value })
+  handleInput(e) {
+    this.setState({
+      newTask: e.target.value
+    })
   }
-  HandleClick(e) {
-    if (this.state.newTask.trim()) {
-      //create new object
+
+  handleClick(e) {
+    if(this.state.newTask.trim()){
+      // Create a new task object
       let newItem = {
         title: this.state.newTask,
         completed: false,
         id: Date.now()
       }
-      //concatenate new task object to the previous task in the state
+      // Concatenate new task object to the previous tasks in the state
       this.setState(prevState => {
         return {
           tasks: prevState.tasks.concat(newItem)
         }
       })
+      // Empty the newTask property in the state
       this.state.newTask = "";
     } else {
       alert('Please enter a value')
     }
-
-
   }
 
   render() {
     return (
       <div>
         <form>
-          <input type="text" onInput={this.HandleInput} value={this.state.newTask} />
-          <button type="button" onClick={this.HandleClick}>Add</button>
+          <input type="text" onInput={this.handleInput} value={this.state.newTask}/>
+          <button type="button" onClick={this.handleClick}>Add</button>
         </form>
-        <TodoItems tasks={this.state.tasks} />
+        <ul>
+          <TodoItems tasks={this.state.tasks} foo="bar"/>
+        </ul>
       </div>
     )
   }
