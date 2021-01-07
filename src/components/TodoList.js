@@ -6,21 +6,7 @@ class TodoList extends React.Component {
     super(props);
     this.state = {
       tasks: [
-        {
-          title: 'Get a shoping cart',
-          completed: false,
-          id: 123456789
-        },
-        {
-          title: "Buy egg",
-          completed: false,
-          id: 678905432
-        },
-        {
-          title: 'Buy Milk',
-          completed: false,
-          id: 234567890
-        }
+     
       ],
       newTask: ''
     }
@@ -36,18 +22,23 @@ class TodoList extends React.Component {
 
   handleClick(e) {
     if(this.state.newTask.trim()){
-      // Create a new task object
-      let newItem = {
-        title: this.state.newTask,
-        completed: false,
-        id: Date.now()
-      }
-      // Concatenate new task object to the previous tasks in the state
-      this.setState(prevState => {
-        return {
-          tasks: prevState.tasks.concat(newItem)
-        }
+
+      fetch('http://localhost:8080/api/todoitems', {
+        method: 'POST',
+        body: JSON.stringify({
+          title: this.state.newTask
+        }),
+        headers: {
+          'Content-type': 'application/json; charset=UTF-8',
+        },
       })
+        .then((response) => response.json())
+        .then((json) => {
+          const newTasks = [...this.state.tasks, json] 
+          this.setState({
+            tasks: newTasks
+          })
+        });
       // Empty the newTask property in the state
       this.state.newTask = "";
     } else {
@@ -55,7 +46,22 @@ class TodoList extends React.Component {
     }
   }
 
+  componentDidMount() {
+    fetch('http://localhost:8080/api/todoitems')
+    .then((response) => response.json())
+    .then((json) => this.setState({tasks: json}));
+  }
+  componentDidUpdate() {
+
+  }
+
+  componentWillUnmount() {
+    
+  }
+
+
   render() {
+    console.log(this.state.newTask)
     return (
       <div>
         <form>
